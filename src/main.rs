@@ -1,5 +1,7 @@
 use std::io::{self, Write};
 
+use thousands::Separable;
+
 fn count_divisors(mut number: i32) -> i32 {
     let mut divisor_count: i32 = 1;
     let mut current_divisor: i32 = 2;
@@ -26,7 +28,11 @@ fn main() {
         let divisors: i32 = count_divisors(number);
         if divisors > max_divisors {
             max_divisors = divisors;
-            print!("\rNumber: {number}, Divisor count: {max_divisors}");
+            print!(
+                "\rNumber: {}, Divisor count: {}",
+                number.separate_with_commas(),
+                max_divisors.separate_with_commas()
+            );
             io::stdout().flush().unwrap();
         }
     }
