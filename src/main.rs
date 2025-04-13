@@ -1,23 +1,32 @@
 mod divisors;
-
-use std::io::{self, Write};
+mod file;
 
 use divisors::count_divisors;
+use file::{read_results, write_results};
 use thousands::Separable;
 
 fn main() {
-    let mut max_divisors: i32 = 0;
-    for number in 1..=10_000_000 {
+    let (mut number, mut max_divisors): (i32, i32) = read_results();
+
+    println!(
+        "Starting values:\nNumber: {}, Divisor count: {}\n",
+        number.separate_with_commas(),
+        max_divisors.separate_with_commas()
+    );
+
+    loop {
         let divisors: i32 = count_divisors(number);
         if divisors > max_divisors {
             max_divisors = divisors;
-            print!(
+
+            println!(
                 "\rNumber: {}, Divisor count: {}",
                 number.separate_with_commas(),
                 max_divisors.separate_with_commas()
             );
-            io::stdout().flush().unwrap();
+            write_results(number, max_divisors);
         }
+
+        number += 1;
     }
-    println!();
 }
